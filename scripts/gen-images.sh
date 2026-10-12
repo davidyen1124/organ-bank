@@ -1,6 +1,7 @@
 #!/bin/zsh
 # Generates slide frames + scene textures with the Codex CLI built-in image generation tool.
 cd "$(dirname "$0")/.."
+mkdir -p logs # git-ignored, so it is missing on a fresh clone
 STYLE="Style for every image: a single still frame grabbed from a vintage black-and-white closed-circuit industrial video camera (1980s vidicon tube). Monochrome grayscale only. Subject centered on a pure black background, harsh high-contrast lighting, bright white highlights, deep blacks, slightly soft analog focus, fine video grain. Photorealistic real physical specimen and real hardware, not an illustration, not a 3D render. No text, no letters, no labels, no captions, no watermark, no border, no frame. Square 1:1 composition with the subject filling about 70 percent of the frame."
 RULES="Rules: use your built-in image generation tool (imagegen) once per image. Never draw, composite or synthesize the images with code, and never make a contact sheet. Generate the images one after another, and after each one copy the generated PNG to the exact path given. If a file already exists at a path, skip it. When all are done, list the files with their pixel dimensions."
 

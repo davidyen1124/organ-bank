@@ -2,9 +2,11 @@
 
 > Closed-circuit anatomy · 10 tubes · 7 loops · 72 bpm · 0 medical licences
 
-**[Visit the patient → organ-bank-nine.vercel.app](https://organ-bank-nine.vercel.app/)**
+[![The Organ Bank page: a human figure made of ten glowing picture tubes, bolted to a concrete wall, next to a numbered list of its seven organs](docs/screenshot.jpg)](https://davidyen1124.github.io/organ-bank/)
 
-[![A human body made of ten glowing picture tubes, bolted to a concrete wall](docs/screenshot.jpg)](https://organ-bank-nine.vercel.app/)
+**Visit the patient: <https://davidyen1124.github.io/organ-bank/>**
+
+## What is this?
 
 A human body, except every organ has been swapped for a bare cathode-ray tube and
 screwed to a concrete wall. This is what happens when you let an electrician
@@ -13,6 +15,9 @@ perform a transplant.
 It is an interactive 3D sculpture. Drag to look around, pick a tube, read its
 chart. Each organ is stuck in its own four-frame loop, timed to the rhythm it
 would have had if it were still inside someone.
+
+The arrow keys step from organ to organ, Esc steps back to the whole body, and
+the scroll wheel (or a pinch) zooms.
 
 ## The patient
 
@@ -31,9 +36,10 @@ Prognosis: stable, as long as nobody trips over the power strip.
 ## FAQ
 
 **Is this a real organ bank?**
-No. Please do not email me about kidneys. `organ-bank.vercel.app` was already
-taken by an actual organ-donation site, which is fair, and is why this one is
-called `-nine`.
+No. Please do not email me about kidneys. The first deployment had to be called
+`organ-bank-nine`, because `organ-bank.vercel.app` was already taken by an actual
+organ-donation site, which is fair. It has since been transplanted to GitHub
+Pages. No signs of rejection so far.
 
 **Is it medically accurate?**
 One of the heart slides is a heart clamped in a bench vise. So: no.
@@ -46,6 +52,41 @@ monster.
 **Why are the eyes following me?**
 They do that.
 
+For the record:
+
+| The heart, in a vise | The eyes, doing that |
+| --- | --- |
+| ![Close-up of the round red heart tube showing a heart clamped in a bench vise, with its specimen card beside it](docs/heart.jpg) | ![Close-up of the two violet eye tubes on their goosenecks, both looking straight out of the screen](docs/eyes.jpg) |
+
+Every picture on this page is a screenshot of the site.
+
+## What's inside
+
+- **Rendering:** [three.js](https://threejs.org/). There are no model files.
+  Every tube, yoke, cage, cable and bolt is built from code when the page loads.
+  The only images are seven slide atlases and four surface textures.
+- **The tubes** all run one shader ([`src/scene/screen.js`](src/scene/screen.js)).
+  It draws the scanlines, the snow and the odd tearing band, and gives each organ
+  its own way of changing slides: the lungs wipe, the stomach loses vertical
+  hold, the kidneys comb sideways, the brain dissolves through static.
+- **Warm-up:** on load each tube starts as a dot, stretches to a line and opens
+  into a picture. They come on from the bottom up. The gut is first. The brain
+  is last.
+- **Timing:** every loop is a pure function of the clock
+  ([`src/loops.js`](src/loops.js)), so the tubes stay in step and screenshots
+  repeat.
+- **Sound:** there are no audio files. The hum is three sawtooth oscillators at
+  60, 120 and 180 Hz, the hiss and the relay click are filtered noise, and the
+  heart is a sine wave falling to 34 Hz.
+- **The small print** is drawn at load time too: the stencilled numbers on the
+  wall, the gallery card, the tag plates. The power supply is rated 18 kV at
+  9 A, serial 0007. The larynx says "do not kink".
+- **Slides and textures** were generated with Codex image generation. The raw
+  frames are in [`assets-src/`](assets-src). `npm run assets` packs each organ's
+  four frames into one 2×2 greyscale atlas.
+- **Slow devices** get a lower resolution rather than a lower frame rate, and
+  `prefers-reduced-motion` calms the swinging and stops the camera drifting.
+
 ## Operating on it yourself
 
 ```sh
@@ -55,6 +96,10 @@ npm run build    # production build into dist/
 npm run preview  # serve the build
 ```
 
+URL flags: `?focus=heart` opens on one organ (`brain`, `eye`, `lungs`, `heart`,
+`stomach`, `kidney` or `gut`), and `?t=12.5` freezes the clock at that second,
+which is how the pictures on this page were made to hold still.
+
 The rest of the surgical kit:
 
 - `npm run assets` turns the raw frames in `assets-src/` into the 2×2 slide
@@ -62,17 +107,32 @@ The rest of the surgical kit:
 - `scripts/gen-images.sh` regenerates those raw frames with the Codex CLI's
   image generation. You only need this if you want different organs.
 - `scripts/qa.mjs`, `scripts/e2e.mjs` and `scripts/live.mjs` drive a headless
-  browser around the piece and take its picture.
+  browser around the piece and take its picture. They use the Google Chrome in
+  `/Applications` and look for the site at `http://127.0.0.1:5179` unless you
+  set `URL`, for example `URL=http://localhost:5173 node scripts/e2e.mjs`.
+  Pictures land in `logs/shots/`, which is git-ignored.
 
 Where things live:
 
 ```
+index.html       the page: canvas, specimen card, about dialog
 src/main.js      boot, camera, render loop
 src/organs.js    the seven specimen cards
 src/loops.js     slide timing: heartbeat, breath, saccades
 src/scene/       tubes, armature, cables, the concrete room
 src/sound.js     the optional room tone
+src/ui.js        organ list, specimen card, buttons
+public/          shipped as-is: slide atlases, textures, the social card
+assets-src/      the raw generated frames and textures (not shipped)
+scripts/         asset pipeline, image generation, browser QA
+docs/            the pictures on this page
 ```
+
+## Deploying
+
+Pushing to `main` runs [a GitHub Actions workflow](.github/workflows/pages.yml)
+that builds with Vite and publishes `dist/` to GitHub Pages. The build uses
+relative paths (`base: './'`), so it works under `/organ-bank/` or anywhere else.
 
 ## Credits
 

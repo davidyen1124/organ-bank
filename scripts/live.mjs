@@ -1,7 +1,9 @@
 // Live (clock running) captures: warm-up, eye tracking, mid-loop frames.
 import puppeteer from 'puppeteer-core';
+import { mkdir } from 'node:fs/promises';
 const base = process.env.URL || 'http://127.0.0.1:5179';
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+await mkdir('logs/shots', { recursive: true }); // git-ignored, so it is missing on a fresh clone
 const browser = await puppeteer.launch({ executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', headless: true, args: ['--use-angle=metal', '--enable-gpu', '--ignore-gpu-blocklist', '--mute-audio'] });
 const page = await browser.newPage();
 page.on('pageerror', (e) => console.log('pageerror', e.message));

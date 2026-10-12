@@ -337,12 +337,14 @@ function frame(now) {
 async function init() {
   resize();
   let loaded = 0;
+  // files in public/ are addressed from the base ('/' in dev, './' in the build), never from the domain root
+  const asset = (p) => `${import.meta.env.BASE_URL}assets/${p}`;
   const files = [
-    ...ORGANS.map((o) => [`slides.${o.id}`, `/assets/slides/${o.id}.webp`, true]),
-    ['concrete', '/assets/tex/concrete.webp', true],
-    ['floor', '/assets/tex/floor.webp', true],
-    ['pcb', '/assets/tex/pcb.webp', true],
-    ['grunge', '/assets/tex/grunge.webp', false],
+    ...ORGANS.map((o) => [`slides.${o.id}`, asset(`slides/${o.id}.webp`), true]),
+    ['concrete', asset('tex/concrete.webp'), true],
+    ['floor', asset('tex/floor.webp'), true],
+    ['pcb', asset('tex/pcb.webp'), true],
+    ['grunge', asset('tex/grunge.webp'), false],
   ];
   const loader = new THREE.TextureLoader();
   const tex = { slides: {} };
