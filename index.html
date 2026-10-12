@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#050506" />
+    <title>Organ Bank — closed-circuit anatomy</title>
+    <meta name="description" content="A body pinned to a concrete wall: ten bare picture tubes, one per organ, each stuck in its own four-frame loop. An interactive 3D sculpture." />
+    <meta property="og:title" content="Organ Bank — closed-circuit anatomy" />
+    <meta property="og:description" content="Ten bare picture tubes, one per organ, each stuck in its own four-frame loop." />
+    <meta property="og:image" content="https://organ-bank-nine.vercel.app/og.jpg" />
+    <meta property="og:url" content="https://organ-bank-nine.vercel.app/" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23050506'/%3E%3Crect x='6' y='8' width='20' height='16' rx='5' fill='%23ff5436'/%3E%3C/svg%3E" />
+  </head>
+  <body>
+    <canvas id="gl" aria-label="Interactive 3D sculpture: a human body assembled from ten glowing picture tubes on a concrete wall. Use the organ list to visit each tube."></canvas>
+
+    <div id="ui" class="booting">
+      <header class="mast">
+        <h1>Organ Bank</h1>
+        <p>Closed-circuit anatomy <span>·</span> 10 tubes <span>·</span> 7 loops <span>·</span> 72 bpm</p>
+      </header>
+
+      <div class="tools">
+        <button id="snd" type="button" aria-pressed="false">Sound off</button>
+        <button id="info" type="button">About</button>
+      </div>
+
+      <nav id="index" aria-label="Organs"></nav>
+
+      <aside id="card" aria-live="polite" hidden>
+        <p class="count"><span id="c-no">01</span> / 07</p>
+        <h2 id="c-latin">Cerebrum</h2>
+        <p class="en" id="c-name">Brain</p>
+        <dl>
+          <div><dt>Loop</dt><dd id="c-loop"></dd></div>
+          <div><dt>Frame</dt><dd><span id="c-frame">1</span> / 4 <span class="frames" aria-hidden="true"><i></i><i></i><i></i><i></i></span></dd></div>
+          <div><dt>Tube</dt><dd id="c-tube"></dd></div>
+          <div><dt>Phosphor</dt><dd id="c-phos"></dd></div>
+        </dl>
+        <p class="text" id="c-text"></p>
+        <div class="steps">
+          <button id="prev" type="button" aria-label="Previous organ">← Prev</button>
+          <button id="next" type="button" aria-label="Next organ">Next →</button>
+          <button id="back" type="button">Whole body</button>
+        </div>
+      </aside>
+
+      <p id="hint">Drag to look around <span>·</span> pick a tube</p>
+    </div>
+
+    <dialog id="about">
+      <h2>Organ Bank</h2>
+      <p>A body pinned to a concrete wall. Each organ is its own bare cathode-ray tube, hung roughly where it belongs and wired back to a perforated sternum. Each one is stuck in a four-frame loop that follows the organ's own rhythm: the heart cuts on the beat, the lungs wipe on the exhale, the gut never stops scrolling.</p>
+      <p>Made as a study after the video sculptures of Alan Rath (1959–2020), who taught picture tubes to behave like body parts. It borrows his vocabulary of exposed tubes, armatures and cable and is not a reproduction of any of his works.</p>
+      <p>The slide frames and surface textures were generated with Codex image generation. The hardware is modelled procedurally in three.js.</p>
+      <form method="dialog"><button type="submit">Close</button></form>
+    </dialog>
+
+    <div id="boot" role="status">
+      <strong>Organ Bank</strong>
+      <span id="boot-msg">Warming tubes</span>
+      <div class="bar"><i id="boot-bar"></i></div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
